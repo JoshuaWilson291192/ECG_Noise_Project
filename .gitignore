@@ -11,6 +11,9 @@ __pycache__/
 # PTB-XL dataset
 data/ptb-xl/
 
+# Results
+results/
+
 # Environment variables
 .env
 
