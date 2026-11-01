@@ -9,7 +9,7 @@ class ECG_CNN(nn.Module):
         self.network = nn.Sequential(
 
         # Convolutional layer 1
-            nn.Conv1d(12, 32, kernel_size=5, stride=2, padding=3),
+            nn.Conv1d(12, 32, kernel_size=5, stride=2, padding=2),
             nn.BatchNorm1d(32),
             nn.ReLU(),
 
@@ -33,15 +33,24 @@ class ECG_CNN(nn.Module):
     def forward(self, x):
         return self.network(x)
 
-#
+
 if __name__ == "__main__":
+    from data_loader import create_dataloaders 
+
+    train_loader, val_loader, test_loader = create_dataloaders(batch_size=4)
+
+    signal, labels, ids = next(iter(train_loader))
+
     model = ECG_CNN()
 
-    example_input = torch.zeros((4, 12, 5000))  # batch size of 4, 12 leads, 5000 samples
-
     model.eval()
-    with torch.no_grad():
-        output = model(example_input)
 
-    print("input shape:", tuple(example_input.shape))
-    print("output shape:", tuple(output.shape))
+    with torch.no_grad():
+        output = model(signal)
+        probabilities = torch.sigmoid(output)
+
+    print("Input shape:", signal.shape)
+    print("Output shape:", output.shape)
+    print("First ECG ID:", ids[0].item())
+    print("Labels:", labels[0].tolist())
+    print("Predicted probabilities:", probabilities[0].tolist())
