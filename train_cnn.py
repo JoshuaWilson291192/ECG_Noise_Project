@@ -19,7 +19,17 @@ folder = Path(__file__).resolve().parent
 
 train_loader, val_loader, _ = create_dataloaders(batch_size=4 if TEST else 16)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+USE_DML = "--dml" in sys.argv
+
+if USE_DML:
+    import torch_directml
+    device = torch_directml.device()
+else:
+    device = torch.device(
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )
+
 model = ECG_CNN().to(device)
 
 loss_fn = torch.nn.BCEWithLogitsLoss()
@@ -58,7 +68,7 @@ def run_epoch(loader, training):
 
     with torch.set_grad_enabled(training):
         for i, (signals, labels, _) in enumerate(loader):
-            if TEST and i == 2:  # Limit to 2 batches in test mode
+            if TEST and i == 2:  # Limit batches in test mode
                 break
 
             signals = signals.to(device)
