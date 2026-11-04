@@ -16,6 +16,7 @@ results/
 
 # Environment variables
 .env
+.venv-dml
 
 # Streamlit secrets
 .streamlit/secrets.toml
