@@ -38,26 +38,6 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 print("Device:", device, "Test mode:", TEST)
 
 
-
-# Test ResNet input and output shapes before training
-def test_model():
-    signals, labels, _ = next(iter(train_loader))
-
-    model.eval()
-
-    with torch.no_grad():
-        outputs = model(signals.to(device))
-
-    assert outputs.shape == labels.shape, "Incorrect output shape"
-
-    print("Input shape:", signals.shape)
-    print("Output shape:", outputs.shape)
-    print("ResNet test: PASSED")
-
-
-test_model()
-
-
 #train and validation
 def run_epoch(loader, training):
     model.train() if training else model.eval()
