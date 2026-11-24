@@ -25,7 +25,7 @@ OUTPUT = ROOT / "results" / "evaluation_val"
 
 
 def load_model(model_class, checkpoint, device):
-    """Build the model, load its trained weights, and switch to evaluation mode."""
+    # Build the model, load its trained weights, and switch to evaluation mode
 
     model = model_class()
 
@@ -88,7 +88,7 @@ def evaluate(labels, probs):
 
 
 def save_confusion_matrices(matrices, name):
-    """Save one labelled 2x2 image per diagnosis."""
+    # Save one labelled 2x2 image per diagnosis
     for c, matrix in zip(CLASSES, matrices):
         fig, ax = plt.subplots(figsize=(5, 4))
         ConfusionMatrixDisplay(matrix, display_labels=["No", "Yes"]).plot(ax=ax, values_format="d", colorbar=False)
